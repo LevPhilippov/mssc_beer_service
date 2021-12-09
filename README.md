@@ -1,2 +1,3 @@
-# mssc_beer_service
-Beer service spring microservice
+# MSSC Beer Service
+
+Beer service spring microservice.
