@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -33,7 +34,7 @@ public class Beer {
     private Integer version;
     @CreationTimestamp
     @Column(updatable = false)
-    private OffsetDateTime createdDate;
+    private Timestamp createdDate;
     @UpdateTimestamp
-    private OffsetDateTime lastModifiedDate;
+    private Timestamp lastModifiedDate;
 }
