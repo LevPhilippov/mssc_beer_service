@@ -3,15 +3,18 @@ package lev.philippov.mssc_beer_service.web.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lev.philippov.mssc_beer_service.domain.Beer;
+import lev.philippov.mssc_beer_service.services.BeerService;
 import lev.philippov.mssc_beer_service.web.models.BeerDto;
 import lev.philippov.mssc_beer_service.web.models.BeerStyleEnum;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.constraints.ConstraintDescriptions;
@@ -23,12 +26,15 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 //import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.snippet.Attributes.key;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureRestDocs
@@ -38,6 +44,9 @@ class BeerControllerTest {
 
     private final static String API_V1_URI = "/api/v1/beer";
 
+    @MockBean
+    BeerService beerService;
+
     @Autowired
     MockMvc mockMvc;
 
@@ -46,8 +55,9 @@ class BeerControllerTest {
 
     @Test
     void getBeerById() throws Exception {
+        when(beerService.findBeerById(any())).thenReturn(BeerDto.builder().build());
         mockMvc.perform(get(API_V1_URI+"/{beerId}",UUID.randomUUID()))
-                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("v1/beer-get",
                         pathParameters(parameterWithName("beerId").description("UUID of desired beer to get")),
@@ -66,7 +76,8 @@ class BeerControllerTest {
     @Test
     void createNewBeer() throws Exception {
         String jsonBeerDto = mapper.writeValueAsString(getValidBeerDto());
-        ConstrainedFields fields = new ConstrainedFields(Beer.class);
+        ConstrainedFields fields = new ConstrainedFields(BeerDto.class);
+        when(beerService.saveNewBeer(any())).thenReturn(BeerDto.builder().build());
         mockMvc.perform(post(API_V1_URI).contentType(MediaType.APPLICATION_JSON).content(jsonBeerDto))
                 .andExpect(status().isNoContent())
                 .andDo(document("v1/beer-new",
@@ -85,9 +96,23 @@ class BeerControllerTest {
     @Test
     void updateBeerById() throws Exception {
         String jsonBeerDto = mapper.writeValueAsString(getValidBeerDto());
-        mockMvc.perform(put(API_V1_URI + "/" + UUID.randomUUID())
+        ConstrainedFields fields = new ConstrainedFields(BeerDto.class);
+        when(beerService.updateBeer(any(),any())).thenReturn(BeerDto.builder().build());
+        mockMvc.perform(put(API_V1_URI + "/{beerId}", UUID.randomUUID())
                 .contentType(MediaType.APPLICATION_JSON).content(jsonBeerDto))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent())
+                .andDo(document("v1/beer-update",
+                        pathParameters(parameterWithName("beerId").description("Id of a Beer that should be updated")),
+                        requestFields(fieldWithPath("id").ignored(),
+                                fields.withPath("beerName").description("Name of a Beer, Not Null"),
+                                fields.withPath("beerStyle").description("Style of a Beer, Not Null"),
+                                fields.withPath("upc").description("Upc of a Beer, Not Null, positive"),
+                                fields.withPath("quantityOnHands").ignored(),
+                                fields.withPath("price").description("Price of a Beer, Not Null, positive"),
+                                fields.withPath("version").ignored(),
+                                fields.withPath("createdDate").ignored(),
+                                fields.withPath("lastModifiedDate").ignored()
+                        )));
     }
 
     private BeerDto getValidBeerDto(){
