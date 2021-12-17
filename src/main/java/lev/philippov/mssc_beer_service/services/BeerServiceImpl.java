@@ -99,9 +99,10 @@ public class BeerServiceImpl implements BeerService {
         return mapper.beerToBeerDto(beer);
     }
 
+    @Cacheable(value = "beerUpc", key = "#upc", condition = "#enhanceWithInventory==false")
     @Override
-    public BeerDto findBeerByUpc(String upc) {
+    public BeerDto findBeerByUpc(String upc, Boolean enhanceWithInventory) {
         Optional<Beer> optional = beerRepository.findBeerByUpc(upc);
-        return mapper.beerToBeerDto(optional.orElseThrow(BeerNotFoundException::new));
+        return enhanceWithInventory ? mapper.beerToBeerDtoEnhanced(optional.orElseThrow(BeerNotFoundException::new)):mapper.beerToBeerDto(optional.orElseThrow(BeerNotFoundException::new));
     }
 }

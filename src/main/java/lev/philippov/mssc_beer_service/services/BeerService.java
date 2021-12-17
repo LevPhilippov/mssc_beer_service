@@ -9,7 +9,7 @@ public interface BeerService {
 
     BeerDto findBeerById(UUID beerId, Boolean enhanceWithInventory);
 
-    BeerDto findBeerByUpc(String upc);
+    BeerDto findBeerByUpc(String upc, Boolean enhanceWithInventory);
 
     BeerDtoPage findAll(Integer pageSize, Integer pageNumber, String beerName, String beerStyle, Boolean enhanceWithInventory);
 

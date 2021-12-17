@@ -40,8 +40,9 @@ public class BeerController {
     }
 
     @GetMapping("/upc/{upc}")
-    public ResponseEntity<BeerDto> getBeerByUpc(@PathVariable("upc") String upc){
-        BeerDto beerById = beerService.findBeerByUpc(upc);
+    public ResponseEntity<BeerDto> getBeerByUpc(@PathVariable("upc") String upc,
+                                                @RequestParam(value = "enhanceWithInventory", required = false, defaultValue = "false") Boolean enhanceWithInventory) {
+        BeerDto beerById = beerService.findBeerByUpc(upc, enhanceWithInventory);
         return new ResponseEntity<BeerDto>(beerById, HttpStatus.OK);
     }
 
