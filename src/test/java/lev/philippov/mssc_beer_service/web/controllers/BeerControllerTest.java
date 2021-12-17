@@ -1,16 +1,11 @@
 package lev.philippov.mssc_beer_service.web.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lev.philippov.mssc_beer_service.domain.Beer;
 import lev.philippov.mssc_beer_service.services.BeerService;
 import lev.philippov.mssc_beer_service.web.models.BeerDto;
 import lev.philippov.mssc_beer_service.web.models.BeerStyleEnum;
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -55,7 +50,7 @@ class BeerControllerTest {
 
     @Test
     void getBeerById() throws Exception {
-        when(beerService.findBeerById(any())).thenReturn(BeerDto.builder().build());
+        when(beerService.findBeerById(any(), any())).thenReturn(BeerDto.builder().build());
         mockMvc.perform(get(API_V1_URI+"/{beerId}",UUID.randomUUID()))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

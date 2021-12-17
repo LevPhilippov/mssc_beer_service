@@ -33,8 +33,9 @@ public class BeerController {
     }
 
     @GetMapping("/{beerId}")
-    public ResponseEntity<BeerDto> getBeerById(@PathVariable("beerId") UUID beerId){
-        BeerDto beerById = beerService.findBeerById(beerId);
+    public ResponseEntity<BeerDto> getBeerById(@PathVariable("beerId") UUID beerId,
+                                               @RequestParam(value = "enhanceWithInventory", required = false, defaultValue = "false") Boolean enhanceWithInventory ){
+        BeerDto beerById = beerService.findBeerById(beerId, enhanceWithInventory);
         return new ResponseEntity<BeerDto>(beerById, HttpStatus.OK);
     }
 

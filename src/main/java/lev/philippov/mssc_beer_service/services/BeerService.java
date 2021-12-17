@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface BeerService {
 
-    BeerDto findBeerById(UUID beerId);
+    BeerDto findBeerById(UUID beerId, Boolean enhanceWithInventory);
 
     BeerDto findBeerByUpc(String upc);
 

@@ -7,6 +7,7 @@ import lev.philippov.mssc_beer_service.services.exceptions.BeerNotFoundException
 import lev.philippov.mssc_beer_service.web.models.BeerDto;
 import lev.philippov.mssc_beer_service.web.models.BeerDtoPage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -33,14 +34,18 @@ public class BeerServiceImpl implements BeerService {
         this.mapper = mapper;
     }
 
+    @Cacheable(value = "beerCache", key = "#beerId",condition = "#enhanceWithInventory==false")
     @Override
-    public BeerDto findBeerById(UUID beerId) {
+    public BeerDto findBeerById(UUID beerId, Boolean enhanceWithInventory) {
+        System.out.println("I WAS CALLED!");
         Optional<Beer> optional = beerRepository.findById(beerId);
-        return mapper.beerToBeerDto(optional.orElseThrow(BeerNotFoundException::new));
+        return enhanceWithInventory ? mapper.beerToBeerDtoEnhanced(optional.orElseThrow(BeerNotFoundException::new)):mapper.beerToBeerDto(optional.orElseThrow(BeerNotFoundException::new));
     }
 
+    @Cacheable(value = "beerListCache", condition = "#enhanceWithInventory==false")
     @Override
     public BeerDtoPage findAll(Integer pageSize, Integer pageNumber, String beerName, String beerStyle, Boolean enhanceWithInventory) {
+        System.out.println("I WAS CALLED!");
         PageRequest pageRequest=null;
         if(!Objects.isNull(pageSize) && !Objects.isNull(pageNumber)){
             pageRequest = PageRequest.of(pageNumber, pageSize);
