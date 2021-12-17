@@ -116,7 +116,7 @@ class BeerControllerTest {
     }
 
     private BeerDto getValidBeerDto(){
-        return BeerDto.builder().beerName("My Beer").beerStyle(BeerStyleEnum.IPA).price(new BigDecimal("12")).upc(123123123123L).build();
+        return BeerDto.builder().beerName("My Beer").beerStyle(BeerStyleEnum.IPA).price(new BigDecimal("12")).upc("123123123123L").build();
     }
 
     private static class ConstrainedFields {

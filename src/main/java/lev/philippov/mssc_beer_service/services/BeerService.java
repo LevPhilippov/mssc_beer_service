@@ -9,7 +9,9 @@ public interface BeerService {
 
     BeerDto findBeerById(UUID beerId);
 
-    BeerDtoPage findAll();
+    BeerDto findBeerByUpc(String upc);
+
+    BeerDtoPage findAll(Integer pageSize, Integer pageNumber, String beerName, String beerStyle, Boolean enhanceWithInventory);
 
     BeerDto saveNewBeer(BeerDto beerDto);
 

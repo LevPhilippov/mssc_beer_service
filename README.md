@@ -2,4 +2,19 @@
 
 # MSSC Beer Service
 
-Beer service spring microservice.
+Beer service spring microservice.<br>
+Port mapping for local development.
+<table>
+    <thead>
+            <td>Beer Service port</td>
+            <td>BeerOrderService port</td>
+            <td>BeerInventory port</td>
+    </thead>
+    <tbody>
+        <tr>
+            <td>8080</td>
+            <td>8081</td>
+            <td>8082</td>
+        </tr>
+    </tbody>
+</table>
