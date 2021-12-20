@@ -60,11 +60,12 @@ class BeerControllerTest {
                                        fieldWithPath("beerName").description("Name of a Beer, Not Null"),
                                        fieldWithPath("beerStyle").description("Style of a Beer, Not Null"),
                                        fieldWithPath("upc").description("Upc of a Beer, Not Null, positive"),
-                                       fieldWithPath("quantityOnHands").description("Quantity on hands, nullable"),
+                                       fieldWithPath("quantityOnHand").description("Quantity on hands, nullable"),
                                        fieldWithPath("price").description("Price of a Beer, Not Null, positive"),
                                        fieldWithPath("version").description("Version"),
                                        fieldWithPath("createdDate").description("Creation timestamp"),
-                                       fieldWithPath("lastModifiedDate").description("Modification timestamp")))
+                                       fieldWithPath("lastModifiedDate").description("Modification timestamp"),
+                                       fieldWithPath("quantityToBrew").ignored()))
                 );
     }
 
@@ -80,7 +81,8 @@ class BeerControllerTest {
                                 fields.withPath("beerName").description("Name of a Beer, Not Null"),
                                 fields.withPath("beerStyle").description("Style of a Beer, Not Null"),
                                 fields.withPath("upc").description("Upc of a Beer, Not Null, positive"),
-                                fields.withPath("quantityOnHands").ignored(),
+                                fields.withPath("quantityOnHand").ignored(),
+                                fields.withPath("quantityToBrew").ignored(),
                                 fields.withPath("price").description("Price of a Beer, Not Null, positive"),
                                 fields.withPath("version").ignored(),
                                 fields.withPath("createdDate").ignored(),
@@ -102,7 +104,8 @@ class BeerControllerTest {
                                 fields.withPath("beerName").description("Name of a Beer, Not Null"),
                                 fields.withPath("beerStyle").description("Style of a Beer, Not Null"),
                                 fields.withPath("upc").description("Upc of a Beer, Not Null, positive"),
-                                fields.withPath("quantityOnHands").ignored(),
+                                fields.withPath("quantityOnHand").ignored(),
+                                fields.withPath("quantityToBrew").ignored(),
                                 fields.withPath("price").description("Price of a Beer, Not Null, positive"),
                                 fields.withPath("version").ignored(),
                                 fields.withPath("createdDate").ignored(),
