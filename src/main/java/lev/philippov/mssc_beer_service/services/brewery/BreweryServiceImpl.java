@@ -1,6 +1,5 @@
-package lev.philippov.mssc_beer_service.services;
+package lev.philippov.mssc_beer_service.services.brewery;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lev.philippov.mssc_beer_service.config.JmsConfig;
 import lev.philippov.mssc_beer_service.domain.Beer;
 import lev.philippov.mssc_beer_service.events.BrewBeerEvent;
@@ -31,6 +30,9 @@ public class BreweryServiceImpl implements BreweryService {
         List<Beer> beers = beerRepository.findAll();
         for (Beer beer : beers) {
             Integer quantityOnHand = service.getQuantityOnHand(beer.getId());
+            log.debug("QOH is: {}", quantityOnHand);
+            log.debug("Min on hand is: {}", beer.getMinOnHand());
+
             if(beer.getMinOnHand()<=quantityOnHand){
                 jmsTemplate.convertAndSend(JmsConfig.BREWERY_BEER_QUEUE, BrewBeerEvent.builder().beerDto(beerMapper.beerToBeerDto(beer)).build());
             }
