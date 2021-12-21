@@ -8,6 +8,9 @@ import org.springframework.jms.support.converter.MessageType;
 
 @Configuration
 public class JmsConfig {
+
+    public static final String BREWERY_BEER_QUEUE = "brewery_beer";
+
     @Bean
     MessageConverter messageConverter(){
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
