@@ -2,7 +2,7 @@ package lev.philippov.mssc_beer_service.services.brewery;
 
 import lev.philippov.mssc_beer_service.config.JmsConfig;
 import lev.philippov.mssc_beer_service.domain.Beer;
-import lev.philippov.mssc_beer_service.events.BrewBeerEvent;
+import guru.sfg.brewery.model.events.BrewBeerEvent;
 import lev.philippov.mssc_beer_service.mappers.BeerMapper;
 import lev.philippov.mssc_beer_service.repository.BeerRepository;
 import lev.philippov.mssc_beer_service.services.inventory.BeerInventoryService;
@@ -33,8 +33,8 @@ public class BreweryServiceImpl implements BreweryService {
             log.debug("QOH is: {}", quantityOnHand);
             log.debug("Min on hand is: {}", beer.getMinOnHand());
 
-            if(beer.getMinOnHand()<=quantityOnHand){
-                jmsTemplate.convertAndSend(JmsConfig.BREWERY_BEER_QUEUE, BrewBeerEvent.builder().beerDto(beerMapper.beerToBeerDto(beer)).build());
+            if(beer.getMinOnHand()>=quantityOnHand){
+                jmsTemplate.convertAndSend(JmsConfig.BREWERY_BEER_QUEUE, new BrewBeerEvent(beerMapper.beerToBeerDto(beer)));
             }
         }
     }

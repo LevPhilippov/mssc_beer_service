@@ -1,8 +1,6 @@
-package lev.philippov.mssc_beer_service.web.models;
+package guru.sfg.brewery.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

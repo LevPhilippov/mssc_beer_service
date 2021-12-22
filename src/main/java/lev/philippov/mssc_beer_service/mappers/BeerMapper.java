@@ -1,7 +1,7 @@
 package lev.philippov.mssc_beer_service.mappers;
 
 import lev.philippov.mssc_beer_service.domain.Beer;
-import lev.philippov.mssc_beer_service.web.models.BeerDto;
+import guru.sfg.brewery.model.BeerDto;
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 

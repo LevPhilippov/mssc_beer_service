@@ -1,4 +1,4 @@
-package lev.philippov.mssc_beer_service.web.models;
+package guru.sfg.brewery.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

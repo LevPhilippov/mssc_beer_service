@@ -1,8 +1,8 @@
 package lev.philippov.mssc_beer_service.web.controllers;
 
 import lev.philippov.mssc_beer_service.services.BeerService;
-import lev.philippov.mssc_beer_service.web.models.BeerDto;
-import lev.philippov.mssc_beer_service.web.models.BeerDtoPage;
+import guru.sfg.brewery.model.BeerDto;
+import guru.sfg.brewery.model.BeerDtoPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

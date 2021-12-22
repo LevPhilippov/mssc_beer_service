@@ -1,7 +1,7 @@
 package lev.philippov.mssc_beer_service.services;
 
-import lev.philippov.mssc_beer_service.web.models.BeerDto;
-import lev.philippov.mssc_beer_service.web.models.BeerDtoPage;
+import guru.sfg.brewery.model.BeerDto;
+import guru.sfg.brewery.model.BeerDtoPage;
 
 import java.util.UUID;
 

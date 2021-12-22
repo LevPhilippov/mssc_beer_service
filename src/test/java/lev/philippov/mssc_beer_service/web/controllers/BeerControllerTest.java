@@ -2,8 +2,8 @@ package lev.philippov.mssc_beer_service.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lev.philippov.mssc_beer_service.services.BeerService;
-import lev.philippov.mssc_beer_service.web.models.BeerDto;
-import lev.philippov.mssc_beer_service.web.models.BeerStyleEnum;
+import guru.sfg.brewery.model.BeerDto;
+import guru.sfg.brewery.model.BeerStyleEnum;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
