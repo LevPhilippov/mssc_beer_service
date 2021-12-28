@@ -30,8 +30,8 @@ public class BreweryServiceImpl implements BreweryService {
         List<Beer> beers = beerRepository.findAll();
         for (Beer beer : beers) {
             Integer quantityOnHand = service.getQuantityOnHand(beer.getId());
-            log.debug("QOH is: {}", quantityOnHand);
-            log.debug("Min on hand is: {}", beer.getMinOnHand());
+            log.debug("Quantity on Hand: {}", quantityOnHand);
+            log.debug("Min on hand: {}", beer.getMinOnHand());
 
             if(beer.getMinOnHand()>=quantityOnHand){
                 jmsTemplate.convertAndSend(JmsConfig.BREWERY_BEER_QUEUE, new BrewBeerEvent(beerMapper.beerToBeerDto(beer)));
