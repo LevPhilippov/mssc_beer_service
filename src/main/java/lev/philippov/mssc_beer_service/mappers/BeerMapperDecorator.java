@@ -4,6 +4,7 @@ import lev.philippov.mssc_beer_service.domain.Beer;
 import lev.philippov.mssc_beer_service.services.inventory.BeerInventoryService;
 import guru.sfg.brewery.model.BeerDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 
 public abstract class BeerMapperDecorator implements BeerMapper{
 
