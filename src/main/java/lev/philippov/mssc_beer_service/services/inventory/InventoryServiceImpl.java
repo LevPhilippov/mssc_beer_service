@@ -1,6 +1,7 @@
 package lev.philippov.mssc_beer_service.services.inventory;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -19,18 +20,19 @@ import java.util.UUID;
 
 @Service
 @Slf4j
-@ConfigurationProperties("sfg.brewery")
+@ConfigurationProperties(value = "sfg.brewery", ignoreUnknownFields = true)
 @Profile("!local-discovery")
 public class InventoryServiceImpl implements BeerInventoryService {
 
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     protected static final String INVENTORY_API="/api/v1/beer/{beerId}/inventory";
 
     private String beerInventoryServiceUrl;
 
-    public InventoryServiceImpl(RestTemplateBuilder builder) {
-        this.restTemplate = builder.build();
+    public InventoryServiceImpl(RestTemplateBuilder builder, @Value("${sfg.brewery.username}")
+    String username, @Value("${sfg.brewery.password}") String password) {
+        this.restTemplate = builder.basicAuthentication(username,password).build();
     }
 
     public void setBeerInventoryServiceUrl(String beerInventoryServiceUrl) {
