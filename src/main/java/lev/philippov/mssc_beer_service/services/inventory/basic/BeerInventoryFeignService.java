@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @FeignClient(name = "inventory-service", fallback = BeerInventoryFallback.class, configuration = FeignClientBasicConfig.class)
-@Profile("!oauth")
+@Profile("basic")
 public interface BeerInventoryFeignService {
 
     @RequestMapping(method = RequestMethod.GET, path = InventoryServiceImpl.INVENTORY_API)

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("!oauth")
+@Profile("basic")
 public class FeignClientBasicConfig {
 
     @Bean

@@ -15,7 +15,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Profile("!oauth")
+@Profile("basic")
 public class BeerInventoryFeignClient implements BeerInventoryService {
 
     private final BeerInventoryFeignService beerInventoryFeignService;

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
 
 @FeignClient(name = "inventory-failover-service")
-@Profile("!oauth")
+@Profile("basic")
 public interface InventoryFailoverFeignService {
 
     @RequestMapping(method = RequestMethod.GET, path = "/inventory-failover")
