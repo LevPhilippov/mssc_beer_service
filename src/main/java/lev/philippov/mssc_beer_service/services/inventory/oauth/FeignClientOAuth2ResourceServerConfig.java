@@ -5,6 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.client.*;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -19,19 +22,23 @@ import java.util.Objects;
 @Profile("oauth")
 public class FeignClientOAuth2ResourceServerConfig {
 
+    public static final Authentication ANONYMOUS_USER_AUTHENTICATION =
+            new AnonymousAuthenticationToken(
+                    "key", "anonymous", AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS"));
+
     //todo сменить clientid и secret на injected
     @Bean
     ClientRegistration clientRegistration(){
         return ClientRegistration
                 .withRegistrationId("keycloak")
-                .clientId("eazybankclient")
-                .clientSecret("c879f346-295e-4a94-803c-5172f96103f0")
+                .clientId("beerservice")
+                .clientSecret("We28xussHho53PAXev6XQF1NcxNbrnr9")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .authorizationUri("http://localhost:8080/auth/realms/eazybankdev/protocol/openid-connect/auth")
-                .tokenUri("http://localhost:8080/auth/realms/eazybankdev/protocol/openid-connect/token")
-                .userInfoUri("http://localhost:8080/auth/realms/eazybankdev/protocol/openid-connect/userinfo")
-                .jwkSetUri("http://localhost:8080/auth/realms/eazybankdev/protocol/openid-connect/certs")
+//                .authorizationUri("http://localhost:8080/auth/realms//protocol/openid-connect/auth")
+                .tokenUri("http://localhost:8087/auth/realms/brewery/protocol/openid-connect/token")
+//                .userInfoUri("http://localhost:8080/auth/realms/eazybankdev/protocol/openid-connect/userinfo")
+//                .jwkSetUri("http://localhost:8080/auth/realms/eazybankdev/protocol/openid-connect/certs")
                 .build();
 
     }
@@ -70,7 +77,7 @@ public class FeignClientOAuth2ResourceServerConfig {
     OAuth2AccessToken getAccessToken(OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager){
         // Build an OAuth2 request for the Okta provider
         OAuth2AuthorizeRequest authorizeRequest = OAuth2AuthorizeRequest.withClientRegistrationId("keycloak")
-                .principal("Demo Service")
+                .principal(ANONYMOUS_USER_AUTHENTICATION)
                 .build();
 
         // Perform the actual authorization request using the authorized client service and authorized client
