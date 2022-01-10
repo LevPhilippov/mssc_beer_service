@@ -1,0 +1,72 @@
+version: '3.8'
+services:
+  jms:
+    image: vromero/activemq-artemis
+    ports:
+      - "8161:8161"
+      - "61616:61616"
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
+  eureka:
+    image: levphilippov89/mssc-eureka-server
+    ports:
+      - "8761:8761"
+  config:
+    image: levphilippov89/mssc-brewery-cloud-config:latest
+    ports:
+      - "8888:8888"
+    depends_on:
+      - eureka
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://netflix:eureka@eureka:8761/eureka
+  inventory:
+      image: levphilippov89/mssc-beer-inventory-service:latest
+      ports:
+        - "8082:8082"
+      depends_on:
+        - eureka
+        - config
+        - zipkin
+      environment:
+        EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://netflix:eureka@eureka:8761/eureka
+        SPRING_PROFILES_ACTIVE: local-discovery,local
+        SPRING_ZIPKIN_ENABLED: true
+        SPRING_ZIPKIN_BASEURL: http://zipkin:9411
+        SPRING_ARTEMIS_HOST: jms
+  failover:
+    image: levphilippov89/mssc-inventory-failover
+    ports:
+      - "8083:8083"
+    depends_on:
+      - eureka
+      - config
+      - zipkin
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://netflix:eureka@eureka:8761/eureka
+      SPRING_ZIPKIN_ENABLED: true
+      SPRING_ZIPKIN_BASEURL: http://zipkin:9411
+  beer:
+    image:
+    local-discovery, local, basic
+
+
+
+  order:
+    image: levphilippov89/mssc-beer-order-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - eureka
+      - config
+      - zipkin
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://netflix:eureka@eureka:8761/eureka
+      SPRING_PROFILES_ACTIVE: local-discovery,local
+      SPRING_ZIPKIN_ENABLED: true
+      SPRING_ZIPKIN_BASEURL: http://zipkin:9411
+      SPRING_ARTEMIS_HOST: jms
+      SFG_BREWERY_BEERSERVICEHOSTURL: http://
+
+

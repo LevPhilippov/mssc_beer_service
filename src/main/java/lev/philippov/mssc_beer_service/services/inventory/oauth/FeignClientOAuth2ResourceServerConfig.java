@@ -1,6 +1,7 @@
 package lev.philippov.mssc_beer_service.services.inventory.oauth;
 
 import feign.RequestInterceptor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -22,23 +23,29 @@ import java.util.Objects;
 @Profile("oauth")
 public class FeignClientOAuth2ResourceServerConfig {
 
+    @Value("${beerservice.keycloak.clientId}")
+    private String CLIENT_ID;
+
+    @Value("${beerservice.keycloak.clientSecret}")
+    private String CLIENT_SECRET;
+
+    @Value("${beerservice.keycloak.tokenUri}")
+    private String TOKEN_URI;
+
+
     public static final Authentication ANONYMOUS_USER_AUTHENTICATION =
             new AnonymousAuthenticationToken(
                     "key", "anonymous", AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS"));
 
-    //todo сменить clientid и secret на injected
     @Bean
     ClientRegistration clientRegistration(){
         return ClientRegistration
                 .withRegistrationId("keycloak")
-                .clientId("beerservice")
-                .clientSecret("We28xussHho53PAXev6XQF1NcxNbrnr9")
+                .clientId(CLIENT_ID)
+                .clientSecret(CLIENT_SECRET)
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-//                .authorizationUri("http://localhost:8080/auth/realms//protocol/openid-connect/auth")
-                .tokenUri("http://localhost:8087/auth/realms/brewery/protocol/openid-connect/token")
-//                .userInfoUri("http://localhost:8080/auth/realms/eazybankdev/protocol/openid-connect/userinfo")
-//                .jwkSetUri("http://localhost:8080/auth/realms/eazybankdev/protocol/openid-connect/certs")
+                .tokenUri(TOKEN_URI)
                 .build();
 
     }

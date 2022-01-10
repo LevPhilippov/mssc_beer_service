@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
 
 @FeignClient(name = "inventory-failover-service", configuration = FeignClientOAuth2ResourceServerConfig.class)
-@Profile("local-discovery")
+@Profile("oauth")
 public interface InventoryFailoverOAuth2FeignService {
 
     @RequestMapping(method = RequestMethod.GET, path = "/inventory-failover")

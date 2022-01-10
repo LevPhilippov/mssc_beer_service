@@ -21,7 +21,6 @@ public class BeerInventoryFallbackServiceImpl implements BeerInventoryFeignServi
     @Override
     public ResponseEntity<List<BeerInventoryDto>> getQtyOnHand(UUID beerId) {
         log.debug("***********Trying to return failover response!************");
-//        return new ResponseEntity(List.of(new BeerInventoryDto()),HttpStatus.OK);
         return inventoryFailoverFeignService.getQtyOnHand();
     }
 }
