@@ -1,9 +1,9 @@
-package lev.philippov.mssc_beer_service.services.inventory;
+package lev.philippov.mssc_beer_service.services.inventory.basic;
 
+import lev.philippov.mssc_beer_service.services.inventory.BeerInventoryDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,7 @@ import java.util.UUID;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-@Profile("local-discovery")
+@Profile("basic")
 public class BeerInventoryFallback implements BeerInventoryFeignService{
 
     private final InventoryFailoverFeignService inventoryFailoverFeignService;

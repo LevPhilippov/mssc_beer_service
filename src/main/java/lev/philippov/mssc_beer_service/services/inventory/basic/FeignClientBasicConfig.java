@@ -1,13 +1,14 @@
-package lev.philippov.mssc_beer_service.config;
+package lev.philippov.mssc_beer_service.services.inventory.basic;
 
 import feign.auth.BasicAuthRequestInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.client.support.BasicAuthenticationInterceptor;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
-public class FeignClientConfig {
+@Profile("basic")
+public class FeignClientBasicConfig {
 
     @Bean
     BasicAuthRequestInterceptor basicAuthRequestInterceptor(@Value("${sfg.brewery.username}") String username,

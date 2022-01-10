@@ -26,7 +26,7 @@ public class InventoryServiceImpl implements BeerInventoryService {
 
     private final RestTemplate restTemplate;
 
-    protected static final String INVENTORY_API="/api/v1/beer/{beerId}/inventory";
+    public static final String INVENTORY_API="/api/v1/beer/{beerId}/inventory";
 
     private String beerInventoryServiceUrl;
 
