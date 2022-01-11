@@ -21,6 +21,7 @@ services:
       - eureka
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://netflix:eureka@eureka:8761/eureka
+      EUREKA_INSTANCE_PREFER-IP-ADDRESS: true
   inventory:
       image: levphilippov89/mssc-beer-inventory-service:latest
       ports:
@@ -31,10 +32,12 @@ services:
         - zipkin
       environment:
         EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://netflix:eureka@eureka:8761/eureka
+        EUREKA_INSTANCE_PREFER-IP-ADDRESS: true
         SPRING_PROFILES_ACTIVE: local-discovery,local
         SPRING_ZIPKIN_ENABLED: true
-        SPRING_ZIPKIN_BASEURL: http://zipkin:9411
+        SPRING_ZIPKIN_BASE-URL: http://zipkin:9411
         SPRING_ARTEMIS_HOST: jms
+      restart: on-failure
   failover:
     image: levphilippov89/mssc-inventory-failover
     ports:
@@ -45,8 +48,10 @@ services:
       - zipkin
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://netflix:eureka@eureka:8761/eureka
+      EUREKA_INSTANCE_PREFER-IP-ADDRESS: true
       SPRING_ZIPKIN_ENABLED: true
-      SPRING_ZIPKIN_BASEURL: http://zipkin:9411
+      SPRING_ZIPKIN_BASE-URL: http://zipkin:9411
+    restart: on-failure
   beer:
     image: levphilippov89/mssc_beer_service
     ports:
@@ -59,11 +64,13 @@ services:
       - inventory
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://netflix:eureka@eureka:8761/eureka
+      EUREKA_INSTANCE_PREFER-IP-ADDRESS: true
       SPRING_PROFILES_ACTIVE: local-discovery, local, basic
       SFG_BREWERY_BEER-INVENTORY-SERVICE-URL: http://inventory:8082
       SPRING_ZIPKIN_ENABLED: true
-      SPRING_ZIPKIN_BASEURL: http://zipkin:9411
+      SPRING_ZIPKIN_BASE-URL: http://zipkin:9411
       SPRING_ARTEMIS_HOST: jms
+    restart: on-failure
   order:
     image: levphilippov89/mssc-beer-order-service
     ports:
@@ -74,12 +81,15 @@ services:
       - zipkin
       - beer
     environment:
+      LOGGING_LEVEL_ROOT: info
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://netflix:eureka@eureka:8761/eureka
+      EUREKA_INSTANCE_PREFER-IP-ADDRESS: true
       SPRING_PROFILES_ACTIVE: local-discovery,local
       SPRING_ZIPKIN_ENABLED: true
-      SPRING_ZIPKIN_BASEURL: http://zipkin:9411
+      SPRING_ZIPKIN_BASE-URL: http://zipkin:9411
       SPRING_ARTEMIS_HOST: jms
       SFG_BREWERY_BEER-SERVICE-HOST-URL: http://beer:8080
+    restart: on-failure
   gateway:
     image: levphilippov89/mssc-brewery-gateway
     ports:
@@ -90,7 +100,10 @@ services:
       - zipkin
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://netflix:eureka@eureka:8761/eureka
+      EUREKA_INSTANCE_PREFER-IP-ADDRESS: true
       SPRING_PROFILES_ACTIVE: local-discovery
       SPRING_ZIPKIN_ENABLED: true
-      SPRING_ZIPKIN_BASEURL: http://zipkin:9411
+      SPRING_ZIPKIN_BASE-URL: http://zipkin:9411
+      SPRING_SECURITY_USER_NAME: user
+      SPRING_SECURITY_USER_PASSWORD: password
 
