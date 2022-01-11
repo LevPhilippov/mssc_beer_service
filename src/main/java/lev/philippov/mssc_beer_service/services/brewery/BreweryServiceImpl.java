@@ -25,7 +25,7 @@ public class BreweryServiceImpl implements BreweryService {
     private final BeerMapper beerMapper;
 
     @Override
-//    @Scheduled(fixedRate = 5000)  //every 5 seconds
+    @Scheduled(fixedRate = 5000)  //every 5 seconds
     public void checkForLowInventory() {
         List<Beer> beers = beerRepository.findAll();
         for (Beer beer : beers) {
