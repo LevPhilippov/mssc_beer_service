@@ -1,5 +1,27 @@
 version: '3.8'
 services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
+    ports:
+      - "9200:9200"
+    environment:
+      discovery.type: single-node
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.7.0
+    ports:
+      - "5601:5601"
+    restart: on-failure
+    depends_on:
+      - elasticsearch
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.7.0
+    command: filebeat -e -strict.perms=false
+    volumes:
+      - ./filebeat/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    user: root
+    restart: on-failure
   jms:
     image: vromero/activemq-artemis
     ports:
@@ -36,7 +58,12 @@ services:
         SPRING_PROFILES_ACTIVE: local-discovery,local
         SPRING_ZIPKIN_BASE-URL: http://zipkin:9411
         SPRING_ARTEMIS_HOST: jms
+        LOGGING_LEVEL_GURU_SFG_BEER: debug
+
       restart: on-failure
+      labels:
+        collect_logs_with_filebeat: "true"
+        decode_log_event_to_json_object: "true"
   failover:
     image: levphilippov89/mssc-inventory-failover
     ports:
@@ -67,6 +94,7 @@ services:
       SFG_BREWERY_BEER-INVENTORY-SERVICE-URL: http://inventory:8082
       SPRING_ZIPKIN_BASE-URL: http://zipkin:9411
       SPRING_ARTEMIS_HOST: jms
+      LOGGING_LEVEL_LEV_PHILIPPOV: debug
     restart: on-failure
   order:
     image: levphilippov89/mssc-beer-order-service
@@ -87,6 +115,9 @@ services:
       SPRING_ARTEMIS_HOST: jms
       SFG_BREWERY_BEER-SERVICE-HOST-URL: http://beer:8080
     restart: on-failure
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
   gateway:
     image: levphilippov89/mssc-brewery-gateway
     ports:
@@ -102,4 +133,5 @@ services:
       SPRING_ZIPKIN_BASE-URL: http://zipkin:9411
       SPRING_SECURITY_USER_NAME: user
       SPRING_SECURITY_USER_PASSWORD: password
+      LOGGING_LEVEL_GURU_SFG_BEER: debug
 
