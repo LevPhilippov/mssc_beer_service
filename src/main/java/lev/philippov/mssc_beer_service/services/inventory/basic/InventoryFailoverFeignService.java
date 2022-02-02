@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
-
+//todo migrate to ReactiveFeign
 @FeignClient(name = "inventory-failover-service")
 @Profile("basic")
 public interface InventoryFailoverFeignService {

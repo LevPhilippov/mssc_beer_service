@@ -3,6 +3,7 @@ package lev.philippov.mssc_beer_service.services.inventory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -23,7 +24,7 @@ import java.util.function.Consumer;
 @Service
 @Slf4j
 //@ConfigurationProperties(value = "sfg.brewery", ignoreUnknownFields = true)
-@Primary
+@Profile("default")
 public class InventoryServiceWebClientImpl implements BeerInventoryService {
 
     private final WebClient webClient;
