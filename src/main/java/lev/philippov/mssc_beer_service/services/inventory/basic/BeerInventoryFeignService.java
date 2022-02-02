@@ -1,7 +1,7 @@
 package lev.philippov.mssc_beer_service.services.inventory.basic;
 
 import lev.philippov.mssc_beer_service.services.inventory.BeerInventoryDto;
-import lev.philippov.mssc_beer_service.services.inventory.InventoryServiceImpl;
+import lev.philippov.mssc_beer_service.services.inventory.InventoryServiceWebClientImpl;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @Profile("basic")
 public interface BeerInventoryFeignService {
 
-    @RequestMapping(method = RequestMethod.GET, path = InventoryServiceImpl.INVENTORY_API)
+    @RequestMapping(method = RequestMethod.GET, path = InventoryServiceWebClientImpl.INVENTORY_API)
     ResponseEntity<List<BeerInventoryDto>> getQtyOnHand(@PathVariable(name = "beerId") UUID beerId);
 
 }
