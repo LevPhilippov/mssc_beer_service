@@ -3,16 +3,22 @@ package lev.philippov.mssc_beer_service.services.inventory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunctions;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 @Service
 @Slf4j
@@ -26,12 +32,16 @@ public class InventoryServiceWebClientImpl implements BeerInventoryService {
 
     @Value("${sfg.brewery.beer-inventory-service-url}")
     private String beerInventoryServiceUrl;
+    @Value("${sfg.brewery.username}")
+    private String username;
+    @Value("${sfg.brewery.password}")
+    private String password;
 
-    public InventoryServiceWebClientImpl(@Value("${sfg.brewery.username}") String username,
-                                         @Value("${sfg.brewery.password}") String password,
-                                         @Value("${sfg.brewery.beer-inventory-service-url}") String beerInventoryServiceUrl)
-    {
+    public InventoryServiceWebClientImpl(@Value("${sfg.brewery.beer-inventory-service-url}")
+                                                 String beerInventoryServiceUrl) {
         this.webClient = WebClient.builder().baseUrl(beerInventoryServiceUrl)
+//                .filter(ExchangeFilterFunctions
+//                        .basicAuthentication(username, password))
                 .clientConnector(new ReactorClientHttpConnector(HttpClient.create().wiretap(true)))
                 .build();
     }
@@ -41,6 +51,8 @@ public class InventoryServiceWebClientImpl implements BeerInventoryService {
         List<BeerInventoryDto> inventoryList = new ArrayList<>();
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder.path(INVENTORY_API).build(beerId.toString()))
+//                .header("Authorization", "Basic " + HttpHeaders.encodeBasicAuth(username,password, StandardCharsets.UTF_8))
+                .headers(httpHeaders -> httpHeaders.setBasicAuth(username,password))
                 .accept(MediaType.APPLICATION_NDJSON)
                 .retrieve()
                 .bodyToFlux(BeerInventoryDto.class)
