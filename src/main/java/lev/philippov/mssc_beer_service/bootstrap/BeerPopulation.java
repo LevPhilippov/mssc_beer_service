@@ -68,7 +68,8 @@ public class BeerPopulation implements CommandLineRunner {
     public void bootstrap2() {
         try {
             StringBuilder sb = new StringBuilder();
-            Files.readAllLines(Path.of("src/main/resources/beer-population.sql")).forEach(sb::append);
+            System.out.println(Path.of("mssc_beer_service/src/main/resources/beer-population.sql"));
+            Files.readAllLines(Path.of("mssc_beer_service/src/main/resources/beer-population.sql")).forEach(sb::append);
             em.createNativeQuery(sb.toString()).executeUpdate();
 
         } catch (IOException e) {
