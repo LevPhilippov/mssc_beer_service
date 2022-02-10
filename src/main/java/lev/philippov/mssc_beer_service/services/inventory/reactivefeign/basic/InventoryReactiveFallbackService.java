@@ -7,23 +7,25 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
-import java.util.List;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Component
-@RequiredArgsConstructor
 @Profile("reactive-basic")
 @Slf4j
 public class InventoryReactiveFallbackService implements InventoryReactiveFeign{
 
-    private final InventoryReactiveFallback inventoryReactiveFallback;
+    private final BeerInventoryDto dto = BeerInventoryDto.builder()
+            .id(UUID.randomUUID())
+            .beerId(UUID.fromString("00000000-0000-0000-0000-000000000000"))
+            .createdDate(OffsetDateTime.now())
+            .lastModifiedDate(OffsetDateTime.now())
+            .quantityOnHand(999)
+            .build();
 
     @Override
     public Flux<BeerInventoryDto> getQtyOnHand(UUID beerId) {
         log.debug("************Fallback METHOD CALLED!*************");
-        List<BeerInventoryDto> body = inventoryReactiveFallback.getQtyOnHand().getBody();
-        System.out.println(body);
-        BeerInventoryDto[] objects = (BeerInventoryDto[])body.toArray();
-        return Flux.just(objects);
+        return Flux.just(dto);
     }
 }
