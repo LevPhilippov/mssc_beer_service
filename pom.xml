@@ -15,6 +15,13 @@
     <description>mssc_beer_service</description>
 
     <dependencies>
+<!--        Reactive Feign-->
+        <dependency>
+            <groupId>com.playtika.reactivefeign</groupId>
+            <artifactId>feign-reactor-spring-cloud-starter</artifactId>
+            <version>3.1.5</version>
+            <type>pom</type>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -64,6 +71,13 @@
             <artifactId>ehcache</artifactId>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <url>https://repo.spring.io/milestone</url>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>

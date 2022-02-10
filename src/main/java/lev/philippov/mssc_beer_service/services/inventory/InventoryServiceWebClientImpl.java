@@ -25,7 +25,7 @@ import java.util.function.Consumer;
 @Slf4j
 //@ConfigurationProperties(value = "sfg.brewery", ignoreUnknownFields = true)
 @Profile("default")
-public class InventoryServiceWebClientImpl implements BeerInventoryService {
+public class  InventoryServiceWebClientImpl implements BeerInventoryService {
 
     private final WebClient webClient;
 
