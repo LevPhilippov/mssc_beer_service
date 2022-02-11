@@ -3,6 +3,7 @@ package lev.philippov.mssc_beer_service.services.inventory.reactivefeign.basic;
 import lev.philippov.mssc_beer_service.services.inventory.BeerInventoryDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
