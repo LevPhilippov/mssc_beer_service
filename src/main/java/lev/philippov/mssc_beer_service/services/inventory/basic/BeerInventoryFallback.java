@@ -13,7 +13,7 @@ import java.util.UUID;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-@Profile("basic")
+@Profile({"basic"})
 public class BeerInventoryFallback implements BeerInventoryFeignService{
 
     private final InventoryFailoverFeignService inventoryFailoverFeignService;
